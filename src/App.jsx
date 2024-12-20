@@ -70,12 +70,18 @@ function App() {
       <button className="reset-button" onClick={handleButtonClick}>
         Reset
       </button>
+      <div class="sidebar">
+        <div class="heading">
+          <h1>Our locations</h1>
+        </div>
+        <div id="listings" class="listings"></div>
+      </div>
       <div>
         <SearchBox
           accessToken={accessToken}
-          map={mapRef.current} // Correctly pass the map instance
+          map={mapRef.current}
           mapboxgl={mapboxgl}
-          value={searchValue} // Use the defined state
+          value={searchValue}
           onChange={handleSearchChange}
           marker
         />
