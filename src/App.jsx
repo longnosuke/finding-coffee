@@ -21,8 +21,23 @@ function App() {
   const [zoom, setZoom] = useState(INITIAL_ZOOM);
   const [searchValue, setSearchValue] = useState("");
   const [locations, setLocations] = useState([]);
+  const [markers, setMarkers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterValue, setFilterValue] = useState("Highland");
+
+  useEffect(() => {
+    if (!mapRef.current || locations.length === 0) return;
+
+    markers.forEach((marker) => marker.remove());
+
+    const newMarkers = locations.map((location) =>
+      new mapboxgl.Marker()
+        .setLngLat([location.lng, location.lat])
+        .addTo(mapRef.current)
+    );
+
+    setMarkers(newMarkers);
+  }, [locations]);
 
   const handleReset = () => {
     mapRef.current.flyTo({
@@ -47,7 +62,12 @@ function App() {
       <Statistics center={center} zoom={zoom} />
       <div className="sidebar-wrapper">
         <Filters onFilterChange={handleFilterChange} />
-        <Listings locations={locations} loading={loading} mapRef={mapRef} />
+        <Listings
+          locations={locations}
+          mapRef={mapRef}
+          markers={markers}
+          loading={loading}
+        />
         <button className="reset-button" onClick={handleReset}>
           Reset
         </button>
