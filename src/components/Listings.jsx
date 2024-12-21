@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import mapboxgl from "mapbox-gl";
-
+const accessToken =
+  "pk.eyJ1IjoidGhhbmhsb25nbm9zdWtlIiwiYSI6ImNtNHV6bzZwejAwM2cyam9pbmU4anFuOG0ifQ.Od7m9cqqZIxozu8N13VhTA";
 mapboxgl.accessToken = accessToken;
 
 const Listings = ({ locations, loading, mapRef, markers }) => {
