@@ -25,7 +25,6 @@ function App() {
   const [filterValue, setFilterValue] = useState("Highland");
 
   const handleReset = () => {
-    setFilterValue("*");
     mapRef.current.flyTo({
       center: INITIAL_CENTER,
       zoom: INITIAL_ZOOM,
