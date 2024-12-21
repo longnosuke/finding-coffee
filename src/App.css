@@ -6,13 +6,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Map Container Styles */
 #map-container {
   height: 100%;
-  width: 70%; /* Adjusted to work with sidebar */
-  background-color: lightgrey; /* Temporarily set background for map */
+  width: 70%;
+  background-color: lightgrey;
   position: absolute;
-  left: 30%; /* Sidebar takes 30% of the width */
+  left: 30%;
   top: 0;
   bottom: 0;
 }
@@ -28,7 +27,7 @@ body {
 }
 
 .statistic-bar {
-  background-color: rgba(35, 55, 75, 0.9); /* Improved color opacity */
+  background-color: rgba(35, 55, 75, 0.9);
   color: #fff;
   padding: 6px 12px;
   font-family: monospace;
@@ -47,7 +46,6 @@ h1 {
   line-height: 20px;
 }
 
-/* Link Styles */
 a {
   color: #404040;
   text-decoration: none;
@@ -57,7 +55,6 @@ a:hover {
   color: #101010;
 }
 
-/* Heading and Flex Layout */
 .heading {
   background: #fff;
   border-bottom: 1px solid #eee;
@@ -68,12 +65,10 @@ a:hover {
   margin-top: 30px;
 }
 
-/* Mapbox Geocoder */
 .mapboxgl-ctrl-geocoder {
   width: 300px !important;
 }
 
-/* Listings Styles */
 .listings {
   height: 100%;
   overflow: auto;
@@ -87,11 +82,19 @@ a:hover {
   text-decoration: none;
 }
 
+.listings .listing:hover {
+  background: #bec5d8;
+}
+
+.listing.active {
+  background-color: #f0f0f0;
+  border: 2px solid #007bff;
+}
+
 .listings .listing:last-child {
   border-bottom: none;
 }
 
-/* Filters Grid Layout */
 .filters {
   display: grid;
   flex-wrap: wrap;
@@ -119,7 +122,6 @@ a:hover {
   border-right: 1px solid rgba(0, 0, 0, 0.25);
 }
 
-/* SearchBox Styles */
 .searchbox {
   position: absolute;
   top: 10px;
@@ -130,7 +132,6 @@ a:hover {
   max-width: 600px;
 }
 
-/* Reset Button */
 .reset-button {
   position: fixed;
   right: 10px;
@@ -149,7 +150,6 @@ a:hover {
   background-color: #0056b3;
 }
 
-/* Statistics Styles */
 .statistic {
   position: absolute;
   bottom: 10px;
