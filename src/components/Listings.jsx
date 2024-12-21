@@ -13,10 +13,24 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
 
     const marker = markers.find(
       (m) =>
-        m.getLngLat().lng === location.lng && m.getLngLat().lat === location.lat
+        m.getLngLat().lng.toFixed(6) === location.lng.toFixed(6) &&
+        m.getLngLat().lat.toFixed(6) === location.lat.toFixed(6)
     );
 
-    if (marker) marker.togglePopup();
+    if (marker) {
+      const popup = marker.getPopup();
+      if (popup) {
+        popup.isOpen() ? popup.remove() : popup.addTo(mapRef.current);
+      } else {
+        const newPopup = new mapboxgl.Popup().setHTML(
+          `<p>${location.name}</p><p>${location.address}</p>`
+        );
+        marker.setPopup(newPopup);
+        newPopup.addTo(mapRef.current);
+      }
+    }
+
+    setActiveLocation(location);
   };
 
   return (
