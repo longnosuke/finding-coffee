@@ -4,6 +4,7 @@ import mapboxgl from "mapbox-gl";
 mapboxgl.accessToken = accessToken;
 
 const Listings = ({ locations, loading, mapRef, markers }) => {
+  const [activeLocation, setActiveLocation] = useState(null);
   const handleListingClick = (location) => {
     mapRef.current.flyTo({
       center: [location.lng, location.lat],
@@ -26,7 +27,7 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
         locations.map((location, index) => (
           <div
             key={index}
-            className="listing"
+            className={`listing ${activeLocation === location ? "active" : ""}`}
             onClick={() => handleListingClick(location)}
           >
             <h2>{location.name}</h2>
