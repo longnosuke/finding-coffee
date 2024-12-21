@@ -1,6 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import { SearchBox } from "@mapbox/search-js-react";
+import Map from "./components/Map";
+import Statistics from "./components/Statistics";
+import Filters from "./components/Filters";
+import Listings from "./components/Listings";
+import ResetButton from "./components/ResetButton";
+import SearchBoxComponent from "./components/SearchBoxComponent";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./App.css";
@@ -12,81 +17,56 @@ const accessToken =
 
 function App() {
   const mapRef = useRef();
-  const mapContainerRef = useRef();
-
   const [center, setCenter] = useState(INITIAL_CENTER);
   const [zoom, setZoom] = useState(INITIAL_ZOOM);
   const [searchValue, setSearchValue] = useState("");
+  const [locations, setLocations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filterValue, setFilterValue] = useState("Highland");
 
-  useEffect(() => {
-    mapboxgl.accessToken = accessToken;
-    mapRef.current = new mapboxgl.Map({
-      container: mapContainerRef.current,
-      center: center,
-      zoom: zoom,
-    });
-
-    new mapboxgl.Marker().setLngLat(INITIAL_CENTER).addTo(mapRef.current);
-
-    mapRef.current.on("move", () => {
-      const mapCenter = mapRef.current.getCenter();
-      const mapZoom = mapRef.current.getZoom();
-
-      // Update state
-      setCenter([mapCenter.lng, mapCenter.lat]);
-      setZoom(mapZoom);
-    });
-
-    return () => {
-      mapRef.current.remove();
-    };
-  }, []);
-
-  const handleSearchChange = (selected) => {
-    setSearchValue(selected);
-
-    if (selected?.coordinates) {
-      const [lng, lat] = selected.coordinates;
-      mapRef.current.flyTo({
-        center: [lng, lat],
-        zoom: INITIAL_ZOOM,
-      });
-    }
-  };
-
-  const handleButtonClick = () => {
+  const handleReset = () => {
+    setFilterValue("*");
     mapRef.current.flyTo({
       center: INITIAL_CENTER,
       zoom: INITIAL_ZOOM,
     });
   };
 
+  const handleFilterChange = (value) => {
+    setFilterValue(value);
+  };
+
   return (
     <>
-      <div className="sidebar">
-        Longitude: {center[0].toFixed(4)} | Latitude: {center[1].toFixed(4)} |
-        Zoom: {zoom.toFixed(2)}
-      </div>
-      <button className="reset-button" onClick={handleButtonClick}>
-        Reset
-      </button>
-      <div class="sidebar">
-        <div class="heading">
-          <h1>Our locations</h1>
+      <SearchBoxComponent
+        accessToken={accessToken}
+        mapRef={mapRef}
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+        className="searchbox"
+      />
+      <Statistics center={center} zoom={zoom} />
+      <div className="sidebar-wrapper">
+        <Filters onFilterChange={handleFilterChange} />
+        <Listings locations={locations} loading={loading} mapRef={mapRef} />
+        <button className="reset-button" onClick={handleReset}>
+          Reset
+        </button>
+        <div className="statistics">
+          <h3>Statistics</h3>
         </div>
-        <div id="listings" class="listings"></div>
       </div>
-      <div>
-        <SearchBox
-          accessToken={accessToken}
-          map={mapRef.current}
-          mapboxgl={mapboxgl}
-          value={searchValue}
-          onChange={handleSearchChange}
-          marker
-        />
-      </div>
-      <div id="map-container" ref={mapContainerRef} />
+      <Map
+        accessToken={accessToken}
+        mapRef={mapRef}
+        initialCenter={INITIAL_CENTER}
+        initialZoom={INITIAL_ZOOM}
+        setCenter={setCenter}
+        setZoom={setZoom}
+        setLocations={setLocations}
+        filterValue={filterValue}
+        setLoading={setLoading}
+      />
     </>
   );
 }
