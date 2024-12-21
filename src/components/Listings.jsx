@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import mapboxgl from "mapbox-gl";
+
+mapboxgl.accessToken = accessToken;
 
 const Listings = ({ locations, loading, mapRef, markers }) => {
   const handleListingClick = (location) => {
