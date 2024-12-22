@@ -76,7 +76,17 @@ const Map = ({
         setLocations(filteredLocations);
         setLoading(false);
 
+        const removeMarkers = () => {
+          if (markersRef.current) {
+            markersRef.current.forEach((marker) => marker.remove());
+            markersRef.current = [];
+          }
+        };
+
         markersRef.current = filteredLocations.map((location) => {
+          // Remove existing markers before adding a new one
+          removeMarkers();
+
           const markerButton = document.createElement("button");
           markerButton.className = "marker-button";
           markerButton.setAttribute("type", "button");
