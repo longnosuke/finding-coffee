@@ -23,6 +23,9 @@ const Map = ({
       zoom: initialZoom,
     });
 
+    const nav = new mapboxgl.NavigationControl();
+    mapRef.current.addControl(nav);
+
     mapRef.current.on("move", () => {
       const mapCenter = mapRef.current.getCenter();
       setCenter([mapCenter.lng, mapCenter.lat]);
