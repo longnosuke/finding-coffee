@@ -26,6 +26,16 @@ const Map = ({
     const nav = new mapboxgl.NavigationControl();
     mapRef.current.addControl(nav);
 
+    mapRef.current.addControl(
+      new mapboxgl.GeolocateControl({
+        positionOptions: {
+          enableHighAccuracy: true,
+        },
+        trackUserLocation: true,
+        showUserHeading: true,
+      })
+    );
+
     mapRef.current.on("move", () => {
       const mapCenter = mapRef.current.getCenter();
       setCenter([mapCenter.lng, mapCenter.lat]);
