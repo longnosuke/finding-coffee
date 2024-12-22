@@ -160,3 +160,10 @@ a:hover {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
+
+.marker-button {
+  height: 35px;
+  top: -18px;
+  width: 35px;
+  opacity: 0 !important;
+}
