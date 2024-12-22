@@ -4,7 +4,7 @@ import Map from "./components/Map";
 import Statistics from "./components/Statistics";
 import Filters from "./components/Filters";
 import Listings from "./components/Listings";
-import ResetButton from "./components/ResetButton";
+// import ResetButton from "./components/ResetButton";
 import SearchBoxComponent from "./components/SearchBoxComponent";
 
 import "mapbox-gl/dist/mapbox-gl.css";
