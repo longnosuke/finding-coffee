@@ -24,7 +24,10 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
         popup.isOpen() ? popup.remove() : popup.addTo(mapRef.current);
       } else {
         const newPopup = new mapboxgl.Popup().setHTML(
-          `<p>${location.name}</p><p>${location.address}</p>`
+          `<p><strong>${location.name}</strong></p>
+          <p>${location.address}</p>
+          <p><strong>Wi-Fi:</strong> ${location.wifi}</p>
+          <p><strong>House Number:</strong> ${location.house_number}</p>`
         );
         marker.setPopup(newPopup);
         newPopup.addTo(mapRef.current);
