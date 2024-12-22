@@ -23,7 +23,7 @@ function App() {
   const [locations, setLocations] = useState([]);
   const [markers, setMarkers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filterValue, setFilterValue] = useState("Highland");
+  const [filterValue, setFilterValue] = useState("Phúc Long");
 
   useEffect(() => {
     if (!mapRef.current || locations.length === 0) return;
