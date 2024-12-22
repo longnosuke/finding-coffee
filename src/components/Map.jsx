@@ -66,17 +66,39 @@ const Map = ({
         setLocations(filteredLocations);
         setLoading(false);
 
-        // Remove old markers and add new ones
-        markersRef.current.forEach((marker) => marker.remove());
         markersRef.current = filteredLocations.map((location) => {
-          const marker = new mapboxgl.Marker()
+          const markerButton = document.createElement("button");
+          markerButton.className = "marker-button";
+          markerButton.setAttribute("type", "button");
+
+          const marker = new mapboxgl.Marker({ element: markerButton })
             .setLngLat([location.lng, location.lat])
-            .setPopup(
-              new mapboxgl.Popup().setHTML(
-                `<h3>${location.name}</h3><p>${location.address}</p>`
-              )
-            )
             .addTo(mapRef.current);
+
+          markerButton.addEventListener("click", () => {
+            console.debug("FlyTo and Popup activated");
+
+            mapRef.current.flyTo({
+              center: [location.lng, location.lat],
+              zoom: 14,
+              speed: 1.2,
+            });
+
+            const popup = marker.getPopup();
+            if (popup) {
+              popup.isOpen() ? popup.remove() : popup.addTo(mapRef.current);
+            } else {
+              const newPopup = new mapboxgl.Popup().setHTML(
+                `<p><strong>${location.name}</strong></p>
+                 <p>${location.address}</p>
+                 <p><strong>Wi-Fi:</strong> ${location.wifi}</p>
+                 <p><strong>House Number:</strong> ${location.house_number}</p>`
+              );
+              marker.setPopup(newPopup);
+              newPopup.addTo(mapRef.current);
+            }
+          });
+
           return marker;
         });
       });
