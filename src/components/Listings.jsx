@@ -41,6 +41,14 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
     setActiveLocation(location);
   };
 
+  const CustomScript = (lng, lat) => {
+    const existingControls = mapRef.current._controls || [];
+    existingControls.forEach((control) => {
+      if (control instanceof MapboxDirections) {
+        mapRef.current.removeControl(control);
+      }
+    });
+
     const directions = new MapboxDirections({
       accessToken: mapboxgl.accessToken,
       unit: "metric",
