@@ -93,7 +93,10 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
             <p>
               <strong>Address:</strong> {location.address}
             </p>
-            <button onClick={() => CustomScript(location.lng, location.lat)}>
+            <button
+              class="getdirection-listings"
+              onClick={() => CustomScript(location.lng, location.lat)}
+            >
               Get Directions
             </button>
           </div>

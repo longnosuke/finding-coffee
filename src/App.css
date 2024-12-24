@@ -166,3 +166,11 @@ a:hover {
   opacity: 0 !important;
   z-index: 2;
 }
+
+.getdirection-listings {
+  color: white;
+  background: #167bff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+}
