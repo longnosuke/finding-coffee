@@ -48,6 +48,22 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
     });
 
     mapRef.current.addControl(directions, "top-left");
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+
+        directions.setOrigin([userLng, userLat]);
+        directions.setDestination([lng, lat]);
+
+        console.log(
+          `Directions set from [${userLng}, ${userLat}] to [${lng}, ${lat}]`
+        );
+      });
+    }
+  };
+
   return (
     <div id="listings" className="listings">
       {loading ? (
@@ -69,6 +85,9 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
             <p>
               <strong>Address:</strong> {location.address}
             </p>
+            <button onClick={() => CustomScript(location.lng, location.lat)}>
+              Get Directions
+            </button>
           </div>
         ))
       )}
