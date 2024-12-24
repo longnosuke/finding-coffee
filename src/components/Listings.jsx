@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import mapboxgl from "mapbox-gl";
+import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
+import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
+
 const accessToken =
   "pk.eyJ1IjoidGhhbmhsb25nbm9zdWtlIiwiYSI6ImNtNHV6bzZwejAwM2cyam9pbmU4anFuOG0ifQ.Od7m9cqqZIxozu8N13VhTA";
 mapboxgl.accessToken = accessToken;
 
 const Listings = ({ locations, loading, mapRef, markers }) => {
   const [activeLocation, setActiveLocation] = useState(null);
+
   const handleListingClick = (location) => {
     mapRef.current.flyTo({
       center: [location.lng, location.lat],
@@ -37,6 +41,37 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
     setActiveLocation(location);
   };
 
+  const CustomScript = (lng, lat) => {
+    const existingControls = mapRef.current._controls || [];
+    existingControls.forEach((control) => {
+      if (control instanceof MapboxDirections) {
+        mapRef.current.removeControl(control);
+      }
+    });
+
+    const directions = new MapboxDirections({
+      accessToken: mapboxgl.accessToken,
+      unit: "metric",
+      profile: "mapbox/cycling",
+    });
+
+    mapRef.current.addControl(directions, "top-left");
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+
+        directions.setOrigin([userLng, userLat]);
+        directions.setDestination([lng, lat]);
+
+        console.log(
+          `Directions set from [${userLng}, ${userLat}] to [${lng}, ${lat}]`
+        );
+      });
+    }
+  };
+
   return (
     <div id="listings" className="listings">
       {loading ? (
@@ -58,6 +93,9 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
             <p>
               <strong>Address:</strong> {location.address}
             </p>
+            <button onClick={() => CustomScript(location.lng, location.lat)}>
+              Get Directions
+            </button>
           </div>
         ))
       )}
