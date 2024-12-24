@@ -9,6 +9,7 @@ mapboxgl.accessToken = accessToken;
 
 const Listings = ({ locations, loading, mapRef, markers }) => {
   const [activeLocation, setActiveLocation] = useState(null);
+
   const handleListingClick = (location) => {
     mapRef.current.flyTo({
       center: [location.lng, location.lat],
@@ -40,6 +41,13 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
     setActiveLocation(location);
   };
 
+    const directions = new MapboxDirections({
+      accessToken: mapboxgl.accessToken,
+      unit: "metric",
+      profile: "mapbox/cycling",
+    });
+
+    mapRef.current.addControl(directions, "top-left");
   return (
     <div id="listings" className="listings">
       {loading ? (
