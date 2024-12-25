@@ -18,13 +18,11 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
       center: [location.lng, location.lat],
       zoom: 16,
     });
-
     const marker = markers.find(
       (m) =>
         m.getLngLat().lng.toFixed(6) === location.lng.toFixed(6) &&
         m.getLngLat().lat.toFixed(6) === location.lat.toFixed(6)
     );
-
     if (marker) {
       const popup = marker.getPopup();
       if (popup) {
@@ -62,7 +60,34 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
         calculateDistances(userLat, userLng);
       });
     }
-  };
+  }, [locations]);
+
+  const CustomScript = useCallback(
+    (lng, lat) => {
+      const existingControls = mapRef.current._controls || [];
+      existingControls.forEach((control) => {
+        if (control instanceof MapboxDirections) {
+          mapRef.current.removeControl(control);
+        }
+      });
+      const directions = new MapboxDirections({
+        accessToken: mapboxgl.accessToken,
+        unit: "metric",
+        profile: "mapbox/cycling",
+      });
+
+      mapRef.current.addControl(directions, "top-left");
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+          directions.setOrigin([userLng, userLat]);
+          directions.setDestination([lng, lat]);
+        });
+      }
+    },
+    [mapRef]
+  );
 
   return (
     <div id="listings" className="listings">
