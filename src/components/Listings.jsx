@@ -10,6 +10,8 @@ mapboxgl.accessToken = accessToken;
 
 const Listings = ({ locations, loading, mapRef, markers }) => {
   const [activeLocation, setActiveLocation] = useState(null);
+  const [distances, setDistances] = useState([]);
+  const [isAscending, setIsAscending] = useState(true);
 
   const handleListingClick = (location) => {
     mapRef.current.flyTo({
