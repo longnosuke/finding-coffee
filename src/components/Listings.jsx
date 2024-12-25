@@ -100,30 +100,61 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
       {loading ? (
         <div>Loading locations...</div>
       ) : (
-        locations.map((location, index) => (
-          <div
-            key={index}
-            className={`listing ${activeLocation === location ? "active" : ""}`}
-            onClick={() => handleListingClick(location)}
-          >
-            <h2>{location.name}</h2>
-            <p>
-              <strong>Wi-Fi:</strong> {location.wifi}
-            </p>
-            <p>
-              <strong>House Number:</strong> {location.house_number}
-            </p>
-            <p>
-              <strong>Address:</strong> {location.address}
-            </p>
+        <>
+          <div className="sorting-buttons">
             <button
-              className="getdirection-listings"
-              onClick={() => CustomScript(location.lng, location.lat)}
+              className="button-primary"
+              onClick={() => sortDistances(true)}
             >
-              Get Directions
+              Distance ↓
+            </button>
+            <button
+              className="button-primary"
+              onClick={() => sortDistances(false)}
+            >
+              Distance ↑
             </button>
           </div>
-        ))
+          {distances.map((dist, index) => {
+            const location = dist.location;
+            return (
+              <div
+                key={index}
+                className={`listing ${
+                  activeLocation === location ? "active" : ""
+                }`}
+                onClick={() => handleListingClick(location)}
+              >
+                <h2>{location.name}</h2>
+                <p>
+                  <strong>Wi-Fi:</strong>
+                  {location.wifi}
+                </p>
+                <p>
+                  <strong>House Number:</strong>
+                  {location.house_number}
+                </p>
+                <p>
+                  <strong>Address:</strong>
+                  {location.address}
+                </p>
+                <p>
+                  <strong>Distance:</strong>
+                  <span>{dist.distance.toFixed(2)} km</span>
+                </p>
+                <button
+                  className="getdirection-listings button-primary"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    CustomScript(location.lng, location.lat);
+                  }}
+                >
+                  Get Directions
+                </button>
+              </div>
+            );
+          })}
+        </>
       )}
     </div>
   );
