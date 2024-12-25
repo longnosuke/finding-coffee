@@ -68,9 +68,6 @@ function App() {
           markers={markers}
           loading={loading}
         />
-        <button className="reset-button" onClick={handleReset}>
-          Reset
-        </button>
         <div className="statistics">
           <h3>Statistics</h3>
         </div>
