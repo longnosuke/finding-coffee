@@ -30,17 +30,15 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
       if (popup) {
         popup.isOpen() ? popup.remove() : popup.addTo(mapRef.current);
       } else {
-        const newPopup = new mapboxgl.Popup().setHTML(
-          `<p><strong>${location.name}</strong></p>
+        const newPopup = new mapboxgl.Popup()
+          .setHTML(`<p><strong>${location.name}</strong></p>
           <p>${location.address}</p>
           <p><strong>Wi-Fi:</strong> ${location.wifi}</p>
-          <p><strong>House Number:</strong> ${location.house_number}</p>`
-        );
+          <p><strong>House Number:</strong> ${location.house_number}</p>`);
         marker.setPopup(newPopup);
         newPopup.addTo(mapRef.current);
       }
     }
-
     setActiveLocation(location);
   };
 
