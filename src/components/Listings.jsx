@@ -44,19 +44,15 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
     setActiveLocation(location);
   };
 
-  const CustomScript = (lng, lat) => {
-    const existingControls = mapRef.current._controls || [];
-    existingControls.forEach((control) => {
-      if (control instanceof MapboxDirections) {
-        mapRef.current.removeControl(control);
-      }
+  const calculateDistances = (userLat, userLng) => {
+    const calculatedDistances = locations.map((location) => {
+      const from = turf.point([userLng, userLat]);
+      const to = turf.point([location.lng, location.lat]);
+      const distance = turf.distance(from, to, { units: "kilometers" });
+      return { location, distance };
     });
-
-    const directions = new MapboxDirections({
-      accessToken: mapboxgl.accessToken,
-      unit: "metric",
-      profile: "mapbox/cycling",
-    });
+    setDistances(calculatedDistances);
+  };
 
     mapRef.current.addControl(directions, "top-left");
 
