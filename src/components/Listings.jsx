@@ -50,7 +50,13 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
     setDistances(calculatedDistances);
   };
 
-    mapRef.current.addControl(directions, "top-left");
+  const sortDistances = (ascending) => {
+    const sortedDistances = [...distances].sort((a, b) =>
+      ascending ? a.distance - b.distance : b.distance - a.distance
+    );
+    setDistances(sortedDistances);
+    setIsAscending(ascending);
+  };
 
   useEffect(() => {
     if (navigator.geolocation && locations.length > 0) {
