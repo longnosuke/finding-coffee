@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import mapboxgl from "mapbox-gl";
 import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
@@ -54,17 +54,12 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
 
     mapRef.current.addControl(directions, "top-left");
 
-    if (navigator.geolocation) {
+  useEffect(() => {
+    if (navigator.geolocation && locations.length > 0) {
       navigator.geolocation.getCurrentPosition((position) => {
         const userLat = position.coords.latitude;
         const userLng = position.coords.longitude;
-
-        directions.setOrigin([userLng, userLat]);
-        directions.setDestination([lng, lat]);
-
-        console.log(
-          `Directions set from [${userLng}, ${userLat}] to [${lng}, ${lat}]`
-        );
+        calculateDistances(userLat, userLng);
       });
     }
   };
