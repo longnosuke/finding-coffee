@@ -50,12 +50,12 @@ const Listings = ({ locations, loading, mapRef, markers }) => {
     setDistances(calculatedDistances);
   };
 
-  const sortDistances = (ascending) => {
+  const sortDistances = (isAscending) => {
     const sortedDistances = [...distances].sort((a, b) =>
-      ascending ? a.distance - b.distance : b.distance - a.distance
+      isAscending ? a.distance - b.distance : b.distance - a.distance
     );
     setDistances(sortedDistances);
-    setIsAscending(ascending);
+    setIsAscending(isAscending);
   };
 
   useEffect(() => {
